@@ -1,4 +1,4 @@
-/************************************************************************
+/*
 **
 **      GSC-18128-1, "Core Flight Executive Version 6.7"
 **
@@ -18,17 +18,22 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-*************************************************************************/
+*/
 
-/**
- * @file
- *
- * Define Sample App Performance IDs
- */
+#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
+#include "fpga_ctrl_table.h"
 
-#ifndef SAMPLE_APP_PERFIDS_H
-#define SAMPLE_APP_PERFIDS_H
+/*
+** The following is an example of the declaration statement that defines the desired
+** contents of the table image.
+*/
+FPGA_CTRL_Table_t FpgaCtrlTable = {1, 2};
 
-#define SAMPLE_APP_PERF_ID 91
-
-#endif /* SAMPLE_APP_PERFIDS_H */
+/*
+** The macro below identifies:
+**    1) the data structure type to use as the table image format
+**    2) the name of the table to be placed into the cFE Table File Header
+**    3) a brief description of the contents of the file image
+**    4) the desired name of the table image binary file that is cFE compatible
+*/
+CFE_TBL_FILEDEF(FpgaCtrlTable, FPGA_CTRL.FpgaCtrlTable, Table Utility Test Table, fpga_ctrl_tbl.tbl)

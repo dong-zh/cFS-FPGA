@@ -26,8 +26,8 @@
  * Main header file for the SAMPLE application
  */
 
-#ifndef SAMPLE_APP_H
-#define SAMPLE_APP_H
+#ifndef FPGA_CTRL_H
+#define FPGA_CTRL_H
 
 /*
 ** Required header files.
@@ -38,21 +38,21 @@
 #include "cfe_sb.h"
 #include "cfe_es.h"
 
-#include "sample_app_perfids.h"
-#include "sample_app_msgids.h"
-#include "sample_app_msg.h"
+#include "fpga_ctrl_perfids.h"
+#include "fpga_ctrl_msgids.h"
+#include "fpga_ctrl_msg.h"
 
 /***********************************************************************/
-#define SAMPLE_APP_PIPE_DEPTH 32 /* Depth of the Command Pipe for Application */
+#define FPGA_CTRL_PIPE_DEPTH 32 /* Depth of the Command Pipe for Application */
 
-#define SAMPLE_APP_NUMBER_OF_TABLES 1 /* Number of Table(s) */
+#define FPGA_CTRL_NUMBER_OF_TABLES 1 /* Number of Table(s) */
 
 /* Define filenames of default data images for tables */
-#define SAMPLE_APP_TABLE_FILE "/cf/sample_app_tbl.tbl"
+#define FPGA_CTRL_TABLE_FILE "/cf/fpga_ctrl_tbl.tbl"
 
-#define SAMPLE_APP_TABLE_OUT_OF_RANGE_ERR_CODE -1
+#define FPGA_CTRL_TABLE_OUT_OF_RANGE_ERR_CODE -1
 
-#define SAMPLE_APP_TBL_ELEMENT_1_MAX 10
+#define FPGA_CTRL_TBL_ELEMENT_1_MAX 10
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
@@ -71,7 +71,7 @@ typedef struct
     /*
     ** Housekeeping telemetry packet...
     */
-    SAMPLE_APP_HkTlm_t HkTlm;
+    FPGA_CTRL_HkTlm_t HkTlm;
 
     /*
     ** Run Status variable used in the main processing loop
@@ -89,30 +89,30 @@ typedef struct
     char   PipeName[CFE_MISSION_MAX_API_LEN];
     uint16 PipeDepth;
 
-    CFE_EVS_BinFilter_t EventFilters[SAMPLE_APP_EVENT_COUNTS];
-    CFE_TBL_Handle_t    TblHandles[SAMPLE_APP_NUMBER_OF_TABLES];
+    CFE_EVS_BinFilter_t EventFilters[FPGA_CTRL_EVENT_COUNTS];
+    CFE_TBL_Handle_t    TblHandles[FPGA_CTRL_NUMBER_OF_TABLES];
 
-} SAMPLE_APP_Data_t;
+} FPGA_CTRL_Data_t;
 
 /****************************************************************************/
 /*
 ** Local function prototypes.
 **
-** Note: Except for the entry point (SAMPLE_APP_Main), these
+** Note: Except for the entry point (FPGA_CTRL_Main), these
 **       functions are not called from any other source module.
 */
-void  SAMPLE_APP_Main(void);
-int32 SAMPLE_APP_Init(void);
-void  SAMPLE_APP_ProcessCommandPacket(CFE_SB_Buffer_t *SBBufPtr);
-void  SAMPLE_APP_ProcessGroundCommand(CFE_SB_Buffer_t *SBBufPtr);
-int32 SAMPLE_APP_ReportHousekeeping(const CFE_MSG_CommandHeader_t *Msg);
-int32 SAMPLE_APP_ResetCounters(const SAMPLE_APP_ResetCountersCmd_t *Msg);
-int32 SAMPLE_APP_Process(const SAMPLE_APP_ProcessCmd_t *Msg);
-int32 SAMPLE_APP_Noop(const SAMPLE_APP_NoopCmd_t *Msg);
-void  SAMPLE_APP_GetCrc(const char *TableName);
+void  FPGA_CTRL_Main(void);
+int32 FPGA_CTRL_Init(void);
+void  FPGA_CTRL_ProcessCommandPacket(CFE_SB_Buffer_t *SBBufPtr);
+void  FPGA_CTRL_ProcessGroundCommand(CFE_SB_Buffer_t *SBBufPtr);
+int32 FPGA_CTRL_ReportHousekeeping(const CFE_MSG_CommandHeader_t *Msg);
+int32 FPGA_CTRL_ResetCounters(const FPGA_CTRL_ResetCountersCmd_t *Msg);
+int32 FPGA_CTRL_Process(const FPGA_CTRL_ProcessCmd_t *Msg);
+int32 FPGA_CTRL_Noop(const FPGA_CTRL_NoopCmd_t *Msg);
+void  FPGA_CTRL_GetCrc(const char *TableName);
 
-int32 SAMPLE_APP_TblValidationFunc(void *TblData);
+int32 FPGA_CTRL_TblValidationFunc(void *TblData);
 
-bool SAMPLE_APP_VerifyCmdLength(CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength);
+bool FPGA_CTRL_VerifyCmdLength(CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength);
 
-#endif /* SAMPLE_APP_H */
+#endif /* FPGA_CTRL_H */

@@ -1,4 +1,4 @@
-/*******************************************************************************
+/************************************************************************
 **
 **      GSC-18128-1, "Core Flight Executive Version 6.7"
 **
@@ -18,25 +18,17 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-*******************************************************************************/
+*************************************************************************/
 
 /**
  * @file
  *
- * Define sample app table
+ * Define FPGA Ctrl Performance IDs
  */
 
-#ifndef SAMPLE_APP_TABLE_H
-#define SAMPLE_APP_TABLE_H
+#ifndef FPGA_CTRL_PERFIDS_H
+#define FPGA_CTRL_PERFIDS_H
 
-/*
-** Table structure
-*/
-typedef struct
-{
-    uint16 Int1;
-    uint16 Int2;
+#define FPGA_CTRL_PERF_ID 92
 
-} SAMPLE_APP_Table_t;
-
-#endif /* SAMPLE_APP_TABLE_H */
+#endif /* FPGA_CTRL_PERFIDS_H */

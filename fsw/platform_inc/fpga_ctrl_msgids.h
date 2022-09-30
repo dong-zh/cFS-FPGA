@@ -1,4 +1,4 @@
-/*
+/************************************************************************
 **
 **      GSC-18128-1, "Core Flight Executive Version 6.7"
 **
@@ -18,22 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-*/
+*************************************************************************/
 
-#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
-#include "sample_app_table.h"
+/**
+ * @file
+ *
+ * Define Sample App Message IDs
+ *
+ * \note The Sample App assumes default configuration which uses V1 of message id implementation
+ */
 
-/*
-** The following is an example of the declaration statement that defines the desired
-** contents of the table image.
-*/
-SAMPLE_APP_Table_t SampleAppTable = {1, 2};
+#ifndef FPGA_CTRL_MSGIDS_H
+#define FPGA_CTRL_MSGIDS_H
 
-/*
-** The macro below identifies:
-**    1) the data structure type to use as the table image format
-**    2) the name of the table to be placed into the cFE Table File Header
-**    3) a brief description of the contents of the file image
-**    4) the desired name of the table image binary file that is cFE compatible
-*/
-CFE_TBL_FILEDEF(SampleAppTable, SAMPLE_APP.SampleAppTable, Table Utility Test Table, sample_app_tbl.tbl)
+/* V1 Command Message IDs must be 0x18xx */
+#define FPGA_CTRL_CMD_MID     0x1892
+#define FPGA_CTRL_SEND_HK_MID 0x1893
+/* V1 Telemetry Message IDs must be 0x08xx */
+#define FPGA_CTRL_HK_TLM_MID 0x0893
+
+#endif /* FPGA_CTRL_MSGIDS_H */

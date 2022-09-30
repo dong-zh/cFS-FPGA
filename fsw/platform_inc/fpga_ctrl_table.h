@@ -1,4 +1,4 @@
-/************************************************************************
+/*******************************************************************************
 **
 **      GSC-18128-1, "Core Flight Executive Version 6.7"
 **
@@ -18,26 +18,25 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-*************************************************************************/
+*******************************************************************************/
 
 /**
  * @file
  *
- * Define SAMPLE App Events IDs
+ * Define sample app table
  */
 
-#ifndef SAMPLE_APP_EVENTS_H
-#define SAMPLE_APP_EVENTS_H
+#ifndef FPGA_CTRL_TABLE_H
+#define FPGA_CTRL_TABLE_H
 
-#define SAMPLE_APP_RESERVED_EID          0
-#define SAMPLE_APP_STARTUP_INF_EID       1
-#define SAMPLE_APP_COMMAND_ERR_EID       2
-#define SAMPLE_APP_COMMANDNOP_INF_EID    3
-#define SAMPLE_APP_COMMANDRST_INF_EID    4
-#define SAMPLE_APP_INVALID_MSGID_ERR_EID 5
-#define SAMPLE_APP_LEN_ERR_EID           6
-#define SAMPLE_APP_PIPE_ERR_EID          7
+/*
+** Table structure
+*/
+typedef struct
+{
+    uint16 Int1;
+    uint16 Int2;
 
-#define SAMPLE_APP_EVENT_COUNTS 7
+} FPGA_CTRL_Table_t;
 
-#endif /* SAMPLE_APP_EVENTS_H */
+#endif /* FPGA_CTRL_TABLE_H */
