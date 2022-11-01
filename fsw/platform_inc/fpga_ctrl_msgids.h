@@ -34,7 +34,9 @@
 /* V1 Command Message IDs must be 0x18xx */
 #define FPGA_CTRL_CMD_MID     0x1892
 #define FPGA_CTRL_SEND_HK_MID 0x1893
+
 /* V1 Telemetry Message IDs must be 0x08xx */
-#define FPGA_CTRL_HK_TLM_MID 0x0893
+#define FPGA_CTRL_HK_TLM_MID  0x0893
+#define FPGA_CTRL_INT_TLM_MID 0x0894 // Message ID for when the FPGA sends a hardware interrupt
 
 #endif /* FPGA_CTRL_MSGIDS_H */

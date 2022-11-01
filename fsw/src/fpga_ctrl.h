@@ -29,18 +29,21 @@
 #ifndef FPGA_CTRL_H
 #define FPGA_CTRL_H
 
+#include <stdatomic.h>
+
 /*
 ** Required header files.
 */
 #include "cfe.h"
 #include "cfe_error.h"
+#include "cfe_es.h"
 #include "cfe_evs.h"
 #include "cfe_sb.h"
-#include "cfe_es.h"
 
-#include "fpga_ctrl_perfids.h"
-#include "fpga_ctrl_msgids.h"
+#include "fpga_ctrl_events.h"
 #include "fpga_ctrl_msg.h"
+#include "fpga_ctrl_msgids.h"
+#include "fpga_ctrl_perfids.h"
 
 /***********************************************************************/
 #define FPGA_CTRL_PIPE_DEPTH 32 /* Depth of the Command Pipe for Application */
@@ -65,8 +68,12 @@ typedef struct
     /*
     ** Command interface counters...
     */
-    uint8 CmdCounter;
-    uint8 ErrCounter;
+    uint8       CmdCounter;
+    uint8       ErrCounter;
+    char        cyphertextHexString[16 * 2 + 1]; // 16 bytes of cyphertext, 2 hex chars per byte, +1 for null terminator
+    atomic_bool childTaskRunning;
+    atomic_bool childTaskShouldExit;
+    CFE_ES_TaskId_t childTaskId;
 
     /*
     ** Housekeeping telemetry packet...
@@ -101,18 +108,6 @@ typedef struct
 ** Note: Except for the entry point (FPGA_CTRL_Main), these
 **       functions are not called from any other source module.
 */
-void  FPGA_CTRL_Main(void);
-int32 FPGA_CTRL_Init(void);
-void  FPGA_CTRL_ProcessCommandPacket(CFE_SB_Buffer_t *SBBufPtr);
-void  FPGA_CTRL_ProcessGroundCommand(CFE_SB_Buffer_t *SBBufPtr);
-int32 FPGA_CTRL_ReportHousekeeping(const CFE_MSG_CommandHeader_t *Msg);
-int32 FPGA_CTRL_ResetCounters(const FPGA_CTRL_ResetCountersCmd_t *Msg);
-int32 FPGA_CTRL_Process(const FPGA_CTRL_ProcessCmd_t *Msg);
-int32 FPGA_CTRL_Noop(const FPGA_CTRL_NoopCmd_t *Msg);
-void  FPGA_CTRL_GetCrc(const char *TableName);
-
-int32 FPGA_CTRL_TblValidationFunc(void *TblData);
-
-bool FPGA_CTRL_VerifyCmdLength(CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength);
+void FPGA_CTRL_Main(void);
 
 #endif /* FPGA_CTRL_H */

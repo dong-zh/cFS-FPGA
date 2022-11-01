@@ -4,11 +4,21 @@ include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
 
 # Create the app module
-add_cfe_app(fpga_ctrl fsw/src/fpga_ctrl.c)
+add_cfe_app(
+  fpga_ctrl
+
+  fsw/src/fpga_ctrl.c
+  fsw/src/fpga_ctrl_interrupts.h
+  fsw/src/fpga_ctrl_aes.h
+  fsw/src/fpga_ctrl_load_bitstream.h
+)
 
 # Include the public API from sample_lib to demonstrate how
 # to call library-provided functions
+
 # add_cfe_app_dependency(fpga_ctrl sample_lib)
+add_cfe_app_dependency(fpga_ctrl mmio_lib)
+
 
 # Add table
 add_cfe_tables(fpgaCtrlTable fsw/tables/fpga_ctrl_tbl.c)
