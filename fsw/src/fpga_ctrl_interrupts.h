@@ -15,7 +15,7 @@ extern FPGA_CTRL_Data_t globalState;
 int32 FPGA_CTRL_IntCtrl(FPGA_CTRL_IntCtrlCmd_t const *SBBufPtr);
 
 static void  FPGA_CTRL_WaitForButton(void);
-static int32 FPGA_CTRL_ResetInterrupts(int uio, uint32 volatile *isr);
+static int32 FPGA_CTRL_ResetInterrupts(int uioFd, uint32 volatile *isr);
 static void  FPGA_CTRL_FullCleanupChildTaskAndExit(int uioFd, void volatile *btnBase, cpusize btnBaseMapRange,
                                                    void volatile *swBase, cpusize swBaseMapRange);
 static void  FPGA_CTRL_ExitChildTask(void);
@@ -145,14 +145,6 @@ static void FPGA_CTRL_WaitForButton(void)
     if (FPGA_CTRL_ResetInterrupts(uioFd, isr) < CFE_SUCCESS)
         FPGA_CTRL_FullCleanupChildTaskAndExit(uioFd, btnBase, MAP_RANGE, swBase, MAP_RANGE);
 
-    OS_printf("FPGA_CTRL: Clearing UIO interrupt...\n");
-    uint32 const one = 1;
-    if (write(uioFd, &one, sizeof(one)) != sizeof(one))
-    {
-        CFE_EVS_SendEvent(FPGA_CTRL_DEBUG_INF_EID, CFE_EVS_EventType_ERROR,
-                          "Failed to clear UIO interrupt, exiting child...");
-        FPGA_CTRL_FullCleanupChildTaskAndExit(uioFd, btnBase, MAP_RANGE, swBase, MAP_RANGE);
-    }
     // Only send message on button down to avoid duplicate messages since button up generates an interrupt as well
     bool lastButtonPressed = !!(*(uint8 volatile *)btnBase); // Read the button position
 #endif
@@ -287,7 +279,7 @@ static void FPGA_CTRL_FullCleanupChildTaskAndExit(int uioFd, void volatile *btnB
     FPGA_CTRL_ExitChildTask(); // This shouldn't return
 }
 
-static int32 FPGA_CTRL_ResetInterrupts(int const uio, uint32 volatile *const isr)
+static int32 FPGA_CTRL_ResetInterrupts(int const uioFd, uint32 volatile *const isr)
 {
     OS_printf("FPGA_CTRL: Resetting interrupts...\n");
     static uint32 const ISR_CH1_MASK = 0x1; // Mask for channel 1
@@ -300,6 +292,15 @@ static int32 FPGA_CTRL_ResetInterrupts(int const uio, uint32 volatile *const isr
     else
     {
         OS_printf("FPGA_CTRL: No interrupt pending on channel 1.\n");
+    }
+
+    OS_printf("FPGA_CTRL: Clearing UIO interrupt...\n");
+    uint32 const one = 1;
+    if (write(uioFd, &one, sizeof(one)) != sizeof(one))
+    {
+        CFE_EVS_SendEvent(FPGA_CTRL_DEBUG_INF_EID, CFE_EVS_EventType_ERROR,
+                          "Failed to clear UIO interrupt, exiting child...");
+        return CFE_EVS_FILE_WRITE_ERROR;
     }
 
     return CFE_SUCCESS;
